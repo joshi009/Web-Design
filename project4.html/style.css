@@ -13,7 +13,7 @@ body {
 }
 
 .hero_section {
-  background-image: url(developer.png);
+  background-image: url(image/developer.png);
   min-height: 100vh;
   background-position: center;
   background-size: cover;
