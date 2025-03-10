@@ -260,7 +260,6 @@ footer {
   .hero_image {
     display: grid;
     place-items: center;
-     
 
   }
   #contact .container {
@@ -273,13 +272,19 @@ footer {
   }
   #hero .container {
     flex-direction: column;
+     
   }
   .hero_image {
     display: grid;
     place-items: center;
+    border-radius: 50%;
+    
     
   }
   #contact .container {
     height: 50vh;
+  }
+  .hero_image {
+    border-radius: 50%;
   }
 }
