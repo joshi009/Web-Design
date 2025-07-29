@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soil Moisture Input & Chart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .input-section {
+      margin: 20px 0;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 150px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #output {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    canvas {
+      margin-top: 30px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌱 Soil Moisture Risk & Chart</h1>
+
+  <div class="input-section">
+    <input type="number" id="moistureInput" placeholder="Enter Moisture %" />
+    <button onclick="submitMoisture()">Submit</button>
+    <div id="output">Awaiting input...</div>
+  </div>
+
+  <canvas id="moistureChart" width="400" height="200"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const output = document.getElementById("output");
+    const moistureInput = document.getElementById("moistureInput");
+
+    const ctx = document.getElementById("moistureChart").getContext("2d");
+    const data = {
+      labels: [],
+      datasets: [{
+        label: 'Soil Moisture (%)',
+        data: [],
+        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+        borderColor: 'rgba(0, 123, 255, 1)',
+        borderWidth: 2,
+        tension: 0.3,
+        fill: true,
+      }]
+    };
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        scales: {
+          x: { title: { display: true, text: 'Time' }},
+          y: {
+            min: 0,
+            max: 100,
+            title: { display: true, text: 'Moisture (%)' }
+          }
+        }
+      }
+    });
+
+    function submitMoisture() {
+      const moisture = parseFloat(moistureInput.value);
+      if (isNaN(moisture) || moisture < 0 || moisture > 100) {
+        output.textContent = "❌ Enter a valid value (0–100)";
+        output.style.color = "red";
+        return;
+      }
+
+      const now = new Date().toLocaleTimeString();
+      if (data.labels.length > 10) {
+        data.labels.shift();
+        data.datasets[0].data.shift();
+      }
+      data.labels.push(now);
+      data.datasets[0].data.push(moisture);
+      chart.update();
+
+      // Risk analysis
+      if (moisture <= 10) {
+        output.textContent = "🔥 Prone to Drought";
+        output.style.color = "blue";
+      } else if (moisture <= 30) {
+        output.textContent = "✅ Optimal Moisture";
+        output.style.color = "green";
+      } else if (moisture <= 50) {
+        output.textContent = "⚠ Excess Moisture";
+        output.style.color = "orange";
+      } else if (moisture <= 80) {
+        output.textContent = "⚡ Earth Leakage Risk";
+        output.style.color = "darkred";
+      } else {
+        output.textContent = "🌊 Waterlogged Soil";
+        output.style.color = "purple";
+      }
+
+      moistureInput.value = "";
+    }
+  </script>
+</body>
+</html>
