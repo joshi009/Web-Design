@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Multi-user Chat Box</title>
+  <link rel="stylesheet" href="cb.css">
+</head>
+<body>
+  <div class="chat-container">
+    <h2>Chat Room 💬</h2>
+    <div class="user-select">
+      <label for="user">Who are you?</label>
+      <select id="userSelect">
+        <option value="Alice">Alice</option>
+        <option value="Bob">Bob</option>
+        <option value="Carol">Carol</option>
+        <option value="Dave">Dave</option>
+      </select>
+    </div>
+    <div class="chat-box" id="chatBox"></div>
+    <form class="chat-form" id="chatForm" autocomplete="off">
+      <input type="text" id="chatInput" placeholder="Type your message..." required>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  <script src="cb.js"></script>
+</body>
+</html>
